@@ -38,7 +38,7 @@ The Datastore-based user models have a `user_permissions` list field, which take
 after `'django.contrib.auth'`.
 2. Replace `'django.contrib.auth.middleware.AuthenticationMiddleware'` with
 `'djangae.contrib.gauth.middleware.AuthenticationMiddleware'`.
-3. Set `AUTH_USER_MODEL = 'djangae.GaeUser'` in your settings file to use the supplied user model or create your own by subclassing `djangae.contrib.gauth.sql.models.GaeAbstractUser`.
+3. Set `AUTH_USER_MODEL = 'sql.GaeUser'` in your settings file to use the supplied user model or create your own by subclassing `djangae.contrib.gauth.sql.models.GaeAbstractUser`.
 4. Add the backend to `AUTHENTICATION_BACKENDS` in your settings file eg:
 
 ```python

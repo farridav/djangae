@@ -20,7 +20,7 @@ class GaeUser(GaeAbstractBaseUser, PermissionsMixin):
     """
 
     class Meta:
-        app_label = "djangae"
+        app_label = "sql"
         swappable = 'AUTH_USER_MODEL'
         verbose_name = _('user')
         verbose_name_plural = _('users')
