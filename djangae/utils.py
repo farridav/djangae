@@ -157,7 +157,7 @@ def port_is_open(url, port):
         s.bind((url, int(port)))
         s.close()
         return True
-    except:
+    except Exception:
         return False
 
 
