@@ -151,7 +151,7 @@ def djangae_webapp(request_handler):
     return request_handler_wrapper
 
 
-def port_is_open(port, url):
+def port_is_open(url, port):
     s = socket()
     try:
         s.connect((url, int(port)))
