@@ -154,8 +154,8 @@ def djangae_webapp(request_handler):
 def port_is_open(url, port):
     s = socket()
     try:
-        s.connect((url, int(port)))
-        s.shutdown(SHUT_RDWR)
+        s.bind((url, int(port)))
+        s.close()
         return True
     except:
         return False
