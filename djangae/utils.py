@@ -165,6 +165,8 @@ def get_next_available_port(url, port):
     for offset in xrange(10):
         if port_is_open(url, port + offset):
             break
+    else:
+        raise Exception("Could not find available port between %d and %d", (port, port + offset))
     return port + offset
 
 
