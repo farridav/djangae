@@ -97,10 +97,14 @@ def _create_dispatcher(configuration, options):
 
     # External port is a new flag introduced in 1.9.19
     current_version = _VersionList(GetVersionObject()['release'])
-    if current_version >= _VersionList('1.9.19'):
+
+    # The new cloud SDK stores version as 0,0,0 for some reason
+    new_sdk = current_version == [0, 0, 0]
+
+    if current_version >= _VersionList('1.9.19') or new_sdk:
         dispatcher_args.append(options.external_port)
 
-    if current_version >= _VersionList('1.9.22'):
+    if current_version >= _VersionList('1.9.22') or new_sdk:
         dispatcher_args.insert(8, None) # Custom config setting
 
     _create_dispatcher.singleton = dispatcher.Dispatcher(*dispatcher_args)
