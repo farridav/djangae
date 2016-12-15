@@ -19,7 +19,7 @@ if DJANGAE_RUNSERVER_IGNORED_DIR_REGEXES:
     DJANGAE_RUNSERVER_IGNORED_DIR_REGEXES = [re.compile(regex) for regex in DJANGAE_RUNSERVER_IGNORED_DIR_REGEXES]
 
 
-def ignore_file(filename):
+def ignore_file(filename, skip_files_re=None):
     """ Replacement for devappserver2.watchter_common.ignore_file
         - to be monkeypatched into place.
     """
@@ -33,7 +33,7 @@ def ignore_file(filename):
     )
 
 
-def skip_ignored_dirs(dirs):
+def skip_ignored_dirs(dirpath, dirs, skip_files_re=None):
     """ Replacement for devappserver2.watchter_common.skip_ignored_dirs
     - to be monkeypatched into place.
     """
