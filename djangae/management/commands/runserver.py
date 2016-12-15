@@ -204,7 +204,11 @@ class Command(runserver.Command):
 
         # External port is a new flag introduced in 1.9.19
         current_version = _VersionList(GetVersionObject()['release'])
-        if current_version >= _VersionList('1.9.19'):
+
+        # The new cloud SDK stores version as 0,0,0 for some reason
+        new_sdk = current_version == [0, 0, 0]
+
+        if current_version >= _VersionList('1.9.19') or new_sdk:
             sandbox._OPTIONS.external_port = None
 
         # Apply equivalent options for Django args
