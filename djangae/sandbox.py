@@ -111,7 +111,10 @@ def _create_dispatcher(configuration, options):
 
     if current_version >= _VersionList('1.9.22') or \
             current_version == TEMP_1_9_49_VERSION_NO:
-        dispatcher_args.insert(8, None) # Custom config setting
+        dispatcher_args.insert(9, DevelopmentServer._create_custom_config(options)) # Custom config setting
+
+    if current_version >= _VersionList('1.9.51'):
+        dispatcher_args.insert(10, DevelopmentServer._create_go_config(options)) # Go config setting
 
     _create_dispatcher.singleton = dispatcher.Dispatcher(*dispatcher_args)
 
@@ -119,7 +122,7 @@ def _create_dispatcher(configuration, options):
 
 
 @contextlib.contextmanager
-def _local(devappserver2=None, configuration=None, options=None, wsgi_request_info=None, **kwargs):
+def _local(devappserver2=None, api_server=None, configuration=None, options=None, wsgi_request_info=None, **kwargs):
 
     # If we use `_LocalRequestInfo`, deferred tasks don't seem to work,
     # but with the default `WSGIRequestInfo`, building the request url for
@@ -163,14 +166,14 @@ def _local(devappserver2=None, configuration=None, options=None, wsgi_request_in
     os.environ['DEFAULT_VERSION_HOSTNAME'] = '%s:%s' % (os.environ['SERVER_NAME'], os.environ['SERVER_PORT'])
 
     devappserver2._setup_environ(configuration.app_id)
-    storage_path = devappserver2._get_storage_path(options.storage_path, configuration.app_id)
+    storage_path = api_server.get_storage_path(options.storage_path, configuration.app_id)
 
     dispatcher = _create_dispatcher(configuration, options)
     request_data = CustomWSGIRequestInfo(dispatcher)
     # Remember the wsgi request info object so it can be reused to avoid duplication.
     dispatcher._request_data = request_data
 
-    _API_SERVER = devappserver2.DevelopmentServer._create_api_server(
+    _API_SERVER = api_server.create_api_server(
         request_data, storage_path, options, configuration)
 
     from .blobstore_service import start_blobstore_service, stop_blobstore_service
@@ -360,6 +363,7 @@ def activate(sandbox_name, add_sdk_to_path=False, new_env_vars=None, **overrides
     import google.appengine.tools.devappserver2.python.sandbox as sandbox
     import google.appengine.tools.devappserver2.devappserver2 as devappserver2
     import google.appengine.tools.devappserver2.wsgi_request_info as wsgi_request_info
+    import google.appengine.tools.devappserver2.api_server as api_server
     import google.appengine.ext.remote_api.remote_api_stub as remote_api_stub
     import google.appengine.api.apiproxy_stub_map as apiproxy_stub_map
 
@@ -400,6 +404,7 @@ def activate(sandbox_name, add_sdk_to_path=False, new_env_vars=None, **overrides
         _OPTIONS = options # Store the options globally so they can be accessed later
         kwargs = dict(
             devappserver2=devappserver2,
+            api_server=api_server,
             configuration=configuration,
             options=options,
             wsgi_request_info=wsgi_request_info,
