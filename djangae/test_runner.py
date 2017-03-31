@@ -91,7 +91,6 @@ DJANGO_TESTS_TO_SKIP = DJANGO_TESTS_WHICH_REQUIRE_ZERO_PKS.union(
 
 def init_testbed():
     IGNORED_STUBS = []
-
     # We allow users to disable scattered IDs in tests. This primarily for running Django tests that
     # assume implicit ordering (yeah, annoying)
     use_scattered = not getattr(settings, "DJANGAE_SEQUENTIAL_IDS_IN_TESTS", False)
