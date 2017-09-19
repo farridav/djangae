@@ -2,7 +2,7 @@ from djangae import environment
 
 
 def fix_c_whitelist():
-    from google.appengine.tools.devappserver2.python import sandbox
+    from google.appengine.tools.devappserver2.python.runtime import sandbox
     if '_sqlite3' not in sandbox._WHITE_LIST_C_MODULES:
         sandbox._WHITE_LIST_C_MODULES.extend([
             '_sqlite3',
@@ -34,7 +34,7 @@ def fix_sandbox():
     if environment.is_production_environment():
         return
 
-    from google.appengine.tools.devappserver2.python import sandbox
+    from google.appengine.tools.devappserver2.python.runtime import sandbox
 
     if '_sqlite3' not in sandbox._WHITE_LIST_C_MODULES:
         fix_c_whitelist()
