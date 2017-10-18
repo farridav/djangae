@@ -210,8 +210,7 @@ def _local(devappserver2=None, configuration=None, options=None, wsgi_request_in
     os.environ['SERVER_NAME'] = url
     os.environ['SERVER_PORT'] = str(port)
     os.environ['DEFAULT_VERSION_HOSTNAME'] = '%s:%s' % (os.environ['SERVER_NAME'], os.environ['SERVER_PORT'])
-
-    devappserver2._setup_environ(configuration.app_id)
+    os.environ['APPLICATION_ID'] = configuration.app_id
 
     from google.appengine.tools.devappserver2 import api_server
     from google.appengine.tools.sdk_update_checker import GetVersionObject, _VersionList
