@@ -207,7 +207,8 @@ def _local(devappserver2=None, configuration=None, options=None, wsgi_request_in
     os.environ['SERVER_PORT'] = str(port)
     os.environ['DEFAULT_VERSION_HOSTNAME'] = '%s:%s' % (os.environ['SERVER_NAME'], os.environ['SERVER_PORT'])
 
-    devappserver2._setup_environ(configuration.app_id)
+    # devappserver2._setup_environ(configuration.app_id)
+    os.environ['APPLICATION_ID'] = configuration.app_id
 
     from google.appengine.tools.devappserver2 import api_server
     from google.appengine.tools.sdk_update_checker import GetVersionObject, _VersionList
@@ -291,7 +292,12 @@ def _remote(configuration=None, remote_api_stub=None, apiproxy_stub_map=None, **
     os.environ['DEFAULT_VERSION_HOSTNAME'] = os.environ['HTTP_HOST']
 
     try:
-        from google.appengine.tools.appcfg import APPCFG_CLIENT_ID, APPCFG_CLIENT_NOTSOSECRET
+        # from google.appengine.tools.appcfg import APPCFG_CLIENT_ID, APPCFG_CLIENT_NOTSOSECRET
+        # Having to import this here because appcfg.py tries to import devshell fro oauth2, and I have a later oauth2
+        # library installed, that doesn't have devshell in it, thus raising an ImportError
+        APPCFG_CLIENT_ID = '550516889912.apps.googleusercontent.com'
+        APPCFG_CLIENT_NOTSOSECRET = 'ykPq-0UYfKNprLRjVx1hBBar'
+
         from google.appengine.tools import appengine_rpc_httplib2
 
         params = appengine_rpc_httplib2.HttpRpcServerOAuth2.OAuth2Parameters(
