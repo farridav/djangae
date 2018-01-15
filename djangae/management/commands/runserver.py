@@ -177,7 +177,7 @@ class Command(runserver.Command):
         sdk_path = _find_sdk_from_python_path()
 
         from google.appengine.tools.devappserver2 import devappserver2
-        from google.appengine.tools.devappserver2 import python_runtime
+        from google.appengine.tools.devappserver2.python import instance_factory as python_runtime
 
         from djangae import sandbox
 
